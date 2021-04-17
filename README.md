@@ -38,8 +38,7 @@ and make sure it is PRIVATE. Be sure to add me as collaborator so I have access.
 (i.e., if `path/to/name.html` is in document path (from DOCROOT)),
 send content of `name.html` or `name.css` with proper http response.
 (b) If `name.html` is not in current directory Respond with 404 (not found).
-(c) If a page starts with one of the symbols(~ // ..),
-respond with 403 forbidden error. For example, `url=hostname:5000/..name.html`
+(c) If a page starts with or includes one of the symbols(~ // ..), and that includes the initial forward slash that all requests have, respond with 403 forbidden error. For example, `url=hostname:5000/..name.html`
 or `/~name.html` would give 403 forbidden error.
 * Make and test your changes. Use both automated tests
 (the script in the 'tests' directory) and some manual tests.
