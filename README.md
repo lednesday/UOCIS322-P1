@@ -3,6 +3,8 @@
 A "getting started" project for CIS 322, introduction to software engineering,
 at the University of Oregon.
 
+## Overview
+
 ### What is this repository for? ###
 
 The objectives of this mini-project are:
@@ -25,7 +27,7 @@ credentials, contact me.)
 * Designed to work in "user mode" (unprivileged),
 therefore using a port number above 1000.
 
-### Assignment ###
+## Tasks
 
 * Fork this repository to create your own repository on GitHub,
 and make sure it is *PUBLIC*. Be sure to add me as collaborator so I have access.
@@ -92,7 +94,7 @@ The autograder IS NOT very good at guessing what you meant to write.
 * Turn in the `credentials.ini` file in Canvas.
 Autograder will use this file to access your GitHub repository.   
 
-### Grading Rubric ###
+## Grading Rubric
 
 * Your code works as expected: 100 points
 
@@ -104,6 +106,6 @@ Assuming the credentials.ini is submitted with the correct URL of your repo.
 
 * If `credentials.ini` is not submitted or the repo is not found, 0 will be assigned.
 
-### Credits ###
+## Credits
 
 Michal Young, Ram Durairajan, Steven Walton, Joe Istas.
