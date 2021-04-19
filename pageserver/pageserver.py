@@ -104,12 +104,12 @@ def respond(sock):
         pieces = file_name.split('/')
         for piece in pieces:
             if len(piece) < 1:
-                transmit(STATUS_OK, sock)
+                # transmit(STATUS_OK, sock)
                 transmit(STATUS_FORBIDDEN, sock)
                 forbidden = True
                 break
             elif (piece[0] == '~') or (piece[0] == '/') or (piece[0] == '.' and piece[1] == '.'):
-                transmit(STATUS_OK, sock)
+                # transmit(STATUS_OK, sock)
                 transmit(STATUS_FORBIDDEN, sock)
                 forbidden = True
                 break
@@ -128,7 +128,7 @@ def respond(sock):
                         #     print("line: ", line)
                         #     transmit(line, sock)
             else:
-                transmit(STATUS_OK, sock)
+                # transmit(STATUS_OK, sock)
                 transmit(STATUS_NOT_FOUND, sock)
                 # else:
                 #     transmit(STATUS_OK, sock)
