@@ -13,15 +13,16 @@
   program is run).
 """
 
+import _thread   # Response computation runs concurrently with main program
+import socket    # Basic TCP/IP communication on the internet
 import config    # Configure from .ini files and command line
+import os
+import os.path
 import logging   # Better than print statements
 logging.basicConfig(format='%(levelname)s:%(message)s',
                     level=logging.INFO)
 log = logging.getLogger(__name__)
-# Logging level may be overridden by configuration 
-
-import socket    # Basic TCP/IP communication on the internet
-import _thread   # Response computation runs concurrently with main program
+# Logging level may be overridden by configuration
 
 
 def listen(portnum):
@@ -90,9 +91,48 @@ def respond(sock):
     log.info("Request was {}\n***\n".format(request))
 
     parts = request.split()
+    print("parts:", parts)
     if len(parts) > 1 and parts[0] == "GET":
-        transmit(STATUS_OK, sock)
-        transmit(CAT, sock)
+        # if parts[1] is in pages, transmit that content
+        options = get_options()
+        path = options.DOCROOT
+        file_name = parts[1][1:]
+        print("file_name:", file_name)
+        # does it start with a forbidden char?
+        # use split and a loop for robustness in directories
+        forbidden = False
+        pieces = file_name.split('/')
+        for piece in pieces:
+            if len(piece) < 1:
+                transmit(STATUS_OK, sock)
+                transmit(STATUS_FORBIDDEN, sock)
+                forbidden = True
+                break
+            elif (piece[0] == '~') or (piece[0] == '/') or (piece[0] == '.' and piece[1] == '.'):
+                transmit(STATUS_OK, sock)
+                transmit(STATUS_FORBIDDEN, sock)
+                forbidden = True
+                break
+        if forbidden == False:
+            source_path = os.path.join(path, file_name)
+            if file_name in os.listdir(path):
+                # if os.path.isfile(source_path):
+                # print("file is in pages!")
+                if (file_name[-4:] == 'html') or (file_name[-3:] == 'css'):
+                    # print("it's html or css!")
+                    transmit(STATUS_OK, sock)
+                    with open(source_path, "r") as file:
+                        # print("file contents: ", file.read()) # for some reason this fails the test
+                        transmit(file.read(), sock)
+                        # for line in file.readlines():
+                        #     print("line: ", line)
+                        #     transmit(line, sock)
+            else:
+                transmit(STATUS_OK, sock)
+                transmit(STATUS_NOT_FOUND, sock)
+                # else:
+                #     transmit(STATUS_OK, sock)
+                #     transmit(CAT, sock)
     else:
         log.info("Unhandled request: {}".format(request))
         transmit(STATUS_NOT_IMPLEMENTED, sock)
@@ -129,8 +169,8 @@ def get_options():
 
     if options.PORT <= 1000:
         log.warning(("Port {} selected. " +
-                         " Ports 0..1000 are reserved \n" +
-                         "by the operating system").format(options.port))
+                     " Ports 0..1000 are reserved \n" +
+                     "by the operating system").format(options.port))
 
     return options
 
