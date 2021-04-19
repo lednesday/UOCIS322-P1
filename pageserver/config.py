@@ -6,10 +6,10 @@ Configure from
 in that order (i.e., in opposite order of precedence).
 
 A configuration namespace module returned by this module is
-suitable for configuring a Flask applicaton object.
+suitable for configuring a Flask application object.
 (Not relevant to project 1)
 
-configparser makes all configuration variables  lower case;
+configparser makes all configuration variables lower case;
 Flask configuration object recognizes only upper case configuration
 variables.  To resolve this conflict, we convert all configuration
 variables from .ini files to upper case.
